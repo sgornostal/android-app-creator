@@ -1,0 +1,143 @@
+// Top-level build file where you can add configuration options common to all sub-projects/modules.
+
+buildscript {
+    repositories {
+        jcenter()
+    }
+    dependencies {
+        classpath 'com.android.tools.build:gradle:0.13.0'
+
+        // NOTE: Do not place your application dependencies here; they belong
+        // in the individual module build.gradle files
+    }
+}
+
+allprojects {
+    repositories {
+        jcenter()
+    }
+}
+
+
+String buildNo
+String appName
+Properties loadedProperties
+
+task initConfig << {
+
+    loadedProperties = new Properties()
+    try {
+        loadedProperties.load(new FileInputStream(config))
+    } catch (Exception e) {
+        throw new Exception("Invalid configuration file path", e)
+    }
+
+    buildNo = UUID.randomUUID().toString()
+    mkdir "temp/$buildNo"
+}
+
+task copyApk(dependsOn: initConfig) << {
+    copy {
+        from 'app', 'gradlew', 'gradlew.bat', 'local.properties'
+        into "temp/$buildNo"
+        exclude '*.apk', '*.iml', 'build/*'
+    }
+    copy {
+        from('gradle')
+        into "temp/$buildNo/gradle"
+    }
+}
+
+task merginProperties(dependsOn: copyApk) << {
+    def buildProps = new Properties()
+    buildProps.load(new FileInputStream("temp/$buildNo/src/main/res/raw/config.properties"))
+    buildProps.putAll(loadedProperties.findAll { !it.key.startsWith('sign.') })
+    buildProps.store(new FileOutputStream("temp/$buildNo/src/main/res/raw/config.properties"), null)
+    loadedProperties = buildProps
+}
+
+task modifyBuild(dependsOn: merginProperties) << {
+    def appname = loadedProperties.getProperty("app.name")
+    if (!appname) {
+        throw new Exception("Invalid app name")
+    }
+    appName = appname.replaceAll('[^a-zA-Z0-9 ]', '')
+    def resources = fileTree(dir: "temp/$buildNo/src/main/res", include: 'values*/strings.xml')
+    resources.each { stringFile ->
+        println "modify file $stringFile"
+        String valuesContent = stringFile.getText('UTF-8')
+        valuesContent = valuesContent.replaceAll("<string name=\"app_name\">AppCreator</string>",
+                "<string name=\"app_name\">$appName</string>")
+        stringFile.write(valuesContent, 'UTF-8')
+    }
+
+    File buildGradle = file("temp/$buildNo/build.gradle")
+    String buildContent = buildGradle.getText('UTF-8')
+    buildContent = buildContent.replace("appcreator.app", "appcreator." + loadedProperties.getProperty("url"))
+    buildContent = buildContent.replace("versionName \"1.0\"", "versionName \"" + loadedProperties.getProperty("app.version") + "\"")
+    buildGradle.write(buildContent, 'UTF-8')
+
+    def splash = loadedProperties.getProperty("splash.image")
+    if (!splash) {
+        return
+    }
+    delete "temp/$buildNo/src/main/res/drawable/splash_bg.png"
+    copy {
+        from splash
+        into "temp/$buildNo/src/main/res/drawable/"
+        rename '(.+).(.+)', 'splash_bg.$2'
+    }
+}
+
+task mergingKeyStoreProperties(dependsOn: modifyBuild) << {
+    def keyStoreProperties = new Properties()
+    def projectKeyStoreProps = new Properties()
+    keyStoreProperties.load(new FileInputStream("temp/$buildNo/src/main/res/raw/config.properties"))
+    projectKeyStoreProps.load(new FileInputStream("temp/$buildNo/keystore.properties"))
+    projectKeyStoreProps.putAll(keyStoreProperties.findAll { it.key.startsWith('sign.') })
+    projectKeyStoreProps.store(new FileOutputStream("temp/$buildNo/keystore.properties"), null)
+}
+
+task convertIcons(dependsOn: mergingKeyStoreProperties) << {
+    def icon = loadedProperties.getProperty("app.icon")
+    if (!icon) {
+        throw new Exception("Invalid icon path")
+    }
+
+    def sizedirs = [36 : 'src/main/res/drawable-ldpi',
+                    48 : 'src/main/res/drawable-mdpi',
+                    72 : 'src/main/res/drawable-hdpi',
+                    92 : 'src/main/res/drawable-xhdpi',
+                    144: 'src/main/res/drawable-xxhdpi']
+    sizedirs.each { s, f ->
+        exec {
+            workingDir "temp/$buildNo"
+            commandLine 'convert', "$icon", '-resize', "${s}x${s}", '-matte', "mask/mask${s}.png",
+                    '-compose', 'DstIn', '-composite', "$f/ic_launcher.png"
+        }
+    }
+
+}
+
+task buildApk(dependsOn: convertIcons) << {
+    exec {
+        workingDir "temp/$buildNo"
+        commandLine './gradlew', 'assembleRelease'
+    }
+}
+
+task generateApk(dependsOn: buildApk) << {
+    copy {
+        from "temp/$buildNo/build/outputs/apk"
+        into "generated"
+        include "*-release.apk"
+        rename(/(.*)+/, "${appName}.apk")
+    }
+}
+
+task cleanTemp << {
+    if (!buildNo) return
+    delete "temp/$buildNo"
+}
+
+generateApk.finalizedBy cleanTemp

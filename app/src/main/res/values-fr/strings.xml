@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">Base App</string>
+    <string name="alert_dialog_ok">OK</string>
+    <string name="alert_dialog_cancel">Annuler</string>
+    <string name="confirm">"Êtes-vous sûr de vouloir quitter?"</string>
+    <string name="network_error">Il n\'y a pas de connexion internet. Réessayez plus tard!</string>
+    <string name="share_title">Partagez notre app!</string>
+    <string name="share_app">Découvrez l\'app</string>
+    <string name="file_chooser">File Chooser</string>
+    <string name="file_browser">File Browser</string>
+    <string name="app_info">
+        Cette app a été créée par
+        <![CDATA[<a href="https://play.google.com/store/apps/details?id=com.apkcreator.fwd">ApkCreator</a>]]>
+        .&lt;br /&gt;Copyright © 2013 Tous droits réservés.
+    </string>
+    <string name="refresh">Actualiser</string>
+    <string name="quit">Quitter</string>
+    <string name="about">À propos</string>
+    <string name="share">Partager</string>
+</resources>
