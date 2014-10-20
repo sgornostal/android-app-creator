@@ -1,12 +1,15 @@
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
+import groovyx.net.http.HTTPBuilder
+
+import static groovyx.net.http.Method.GET
 
 buildscript {
     repositories {
         jcenter()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:0.13.0'
-
+        classpath 'com.android.tools.build:gradle:0.13.0',
+                'org.codehaus.groovy.modules.http-builder:http-builder:0.5.2'
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
     }
@@ -18,7 +21,7 @@ allprojects {
     }
 }
 
-
+Boolean DEBUG = true
 String buildNo
 String appName
 Properties loadedProperties
@@ -141,3 +144,33 @@ task cleanTemp << {
 }
 
 generateApk.finalizedBy cleanTemp
+
+gradle.taskGraph.afterTask { Task task, TaskState state ->
+    if (!DEBUG) {
+        def http = new HTTPBuilder("http://localhost/")
+        if (state.failure) {
+            http.request(GET) {
+                uri.query = [v: '1.0', q: 'Calvin and Hobbes']
+                response.success = { resp, reader ->
+                    println "My response handler got response: ${resp.statusLine}"
+                    println reader
+                }
+                response.'404' = { resp ->
+                    println 'Not found'
+                }
+            }
+        } else {
+            http.request(GET) {
+                uri.query = [v: '1.0', q: 'Calvin and Hobbes']
+                response.success = { resp, reader ->
+                    println "My response handler got response: ${resp.statusLine}"
+                    println reader
+                }
+                response.'404' = { resp ->
+                    println 'Not found'
+                }
+            }
+        }
+    }
+}
+
