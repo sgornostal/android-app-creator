@@ -132,7 +132,7 @@ task convertIcons(dependsOn: mergingKeyStoreProperties) << {
         }
         exec {
             workingDir "temp/$buildNo"
-            commandLine convertCommand, "$icon", '-resize', "${s}x${s}", '-matte', "mask/mask${s}.png",
+            commandLine convertCommand, "$icon", '-gravity'. 'center', '-resize', "${s}x${s}", '-matte', "mask/mask${s}.png",
                     '-compose', 'DstIn', '-composite', "$f/ic_launcher.png"
         }
     }
