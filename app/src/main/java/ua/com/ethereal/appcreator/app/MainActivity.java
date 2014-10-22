@@ -1,11 +1,14 @@
 package ua.com.ethereal.appcreator.app;
 
 import android.app.Dialog;
+import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
+import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.net.MailTo;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.text.Html;
@@ -21,6 +24,7 @@ import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdSize;
 import com.google.android.gms.ads.AdView;
 
+import java.io.*;
 import java.util.List;
 import java.util.Locale;
 import java.util.Properties;
@@ -46,7 +50,11 @@ public class MainActivity extends ActionBarActivity {
 
         init();
 
-        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        if (!applicationConfiguration.getStatusBar()) {
+            getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+                    WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        }
+
         if (!applicationConfiguration.getActionBarConfiguration().getEnabled()) {
             getSupportActionBar().hide();
         } else {
@@ -173,7 +181,8 @@ public class MainActivity extends ActionBarActivity {
         try {
             Properties properties = new Properties();
             properties.load(getResources().openRawResource(R.raw.config));
-            applicationConfiguration = ApplicationConfiguration.Builder.build(properties);
+            String infoText = readResource(this, R.raw.info);
+            applicationConfiguration = ApplicationConfiguration.Builder.build(properties, infoText);
             menuConfigurationList = MenuConfiguration.Builder.build(properties);
         } catch (Exception ex) {
             Log.e(TAG, "Failed to load application properties.", ex);
@@ -275,9 +284,21 @@ public class MainActivity extends ActionBarActivity {
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setContentView(R.layout.dialog_about);
         TextView infoView = (TextView) dialog.findViewById(R.id.text_info_view);
-        String html = getResources().getString(R.string.app_info);
+        String html = applicationConfiguration.getInfo();
         infoView.setText(Html.fromHtml(html));
         infoView.setMovementMethod(LinkMovementMethod.getInstance());
         dialog.show();
+    }
+
+    public String readResource(Context context, int resourceId) throws IOException {
+        Resources resources = context.getResources();
+        InputStream is = resources.openRawResource(resourceId);
+        BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(is));
+        StringBuilder stringBuilder = new StringBuilder();
+        String line;
+        while ((line = bufferedReader.readLine()) != null) {
+            stringBuilder.append(line);
+        }
+        return stringBuilder.toString();
     }
 }

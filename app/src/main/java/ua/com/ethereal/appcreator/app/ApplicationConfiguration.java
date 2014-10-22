@@ -135,10 +135,12 @@ public class ApplicationConfiguration {
     }
 
     public static class Builder {
-        public static ApplicationConfiguration build(final Properties properties) {
+        public static ApplicationConfiguration build(final Properties properties, String info) {
             ApplicationConfiguration applicationConfiguration = new ApplicationConfiguration();
             applicationConfiguration.setUrl(getUrl(properties));
             applicationConfiguration.setLocale(createLocale(properties.getProperty("locale")));
+            applicationConfiguration.setStatusBar(Boolean.parseBoolean(properties.getProperty("statusbar")));
+            applicationConfiguration.setInfo(info);
             createConfiguration(applicationConfiguration, properties);
             setDisplayOrientation(applicationConfiguration, properties);
             setBrowserType(applicationConfiguration, properties);
@@ -259,6 +261,8 @@ public class ApplicationConfiguration {
 
     private String url;
     private Locale locale;
+    private Boolean statusBar;
+    private String info;
     private ActionBarConfiguration actionBarConfiguration;
     private Integer displayOrientation;
     private BrowserType browserType;
@@ -341,5 +345,21 @@ public class ApplicationConfiguration {
 
     public void setSplashConfiguration(SplashConfiguration splashConfiguration) {
         this.splashConfiguration = splashConfiguration;
+    }
+
+    public Boolean getStatusBar() {
+        return statusBar;
+    }
+
+    public void setStatusBar(Boolean statusBar) {
+        this.statusBar = statusBar;
+    }
+
+    public String getInfo() {
+        return info;
+    }
+
+    public void setInfo(String info) {
+        this.info = info;
     }
 }
