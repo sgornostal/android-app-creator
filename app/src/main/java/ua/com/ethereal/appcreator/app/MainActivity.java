@@ -207,6 +207,9 @@ public class MainActivity extends ActionBarActivity {
             for (final MenuConfiguration menuConfiguration : menuConfigurationList) {
                 MenuItem menuItem = menu.add(menuConfiguration.getName());
                 menuItem.setIcon(getResources().getDrawable(menuConfiguration.getIcon().getId()));
+                if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
+                    menuItem.setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM | MenuItem.SHOW_AS_ACTION_WITH_TEXT);
+                }
                 menuItem.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
                     @Override
                     public boolean onMenuItemClick(MenuItem menuItem) {

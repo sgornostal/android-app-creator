@@ -3,7 +3,7 @@
 <head>
 </head>
 <body>
-	<form action="post.php" method="post" type="submit" enctype="multipart/form-data">
+	<form action="realtime.php" method="post" type="submit" enctype="multipart/form-data">
 		<input placeholder="url" type="text" name="url" /> <br/>
 		<input placeholder="package" type="text" name="app.package" /> <br/>
 		<input placeholder="name" type="text" name="app.name" /> <br/>
@@ -34,6 +34,12 @@
 			<option value="true">Display</option>
 			<option value="false">Hide</option>
 		</select><br/>
+		<select name="actionbar.enabled">
+			<option>-ActionBar-</option>
+			<option value="true">Enable</option>
+			<option value="false">Disable</option>
+		</select><br/>
+		<input placeholder="action bar color" type="text" name="actionbar.color" /> <br/>
 		<select name="cache">
 			<option>-Cache-</option>
 			<option value="true">Enable</option>
@@ -85,7 +91,7 @@
 		tab1 <br/>
 		<input placeholder="name" type="text" name="menu.0.name" /> <br/>
 		<select name="menu.0.action">
-			<option>-Action-</option>
+			<option value="">-Action-</option>
 			<option value="disable">Disable</option>
 			<option value="refresh">refresh</option>
 			<option value="share">share</option>
@@ -94,7 +100,7 @@
 			<option value="url">url</option>
 		</select><br/>
 		<select name="menu.0.icon">
-			<option>-Icon-</option>
+			<option value="">-Icon-</option>
 			<option value="ic_at">ic_at</option>			
 			<option value="ic_home">ic_home</option>
 			<option value="ic_info">ic_info</option>
@@ -109,7 +115,7 @@
 		tab2 <br/>
 		<input placeholder="name" type="text" name="menu.1.name" /> <br/>
 		<select name="menu.1.action">
-			<option>-Action-</option>
+			<option value="">-Action-</option>
 			<option value="disable">Disable</option>
 			<option value="refresh">refresh</option>
 			<option value="share">share</option>
@@ -118,7 +124,7 @@
 			<option value="url">url</option>
 		</select><br/>
 		<select name="menu.1.icon">
-			<option>-Icon-</option>
+			<option value="">-Icon-</option>
 			<option value="ic_at">ic_at</option>			
 			<option value="ic_home">ic_home</option>
 			<option value="ic_info">ic_info</option>
@@ -133,7 +139,7 @@
 		tab3 <br/>
 		<input placeholder="name" type="text" name="menu.2.name" /> <br/>
 		<select name="menu.2.action">
-			<option>-Action-</option>
+			<option value="">-Action-</option>
 			<option value="disable">Disable</option>
 			<option value="refresh">refresh</option>
 			<option value="share">share</option>
@@ -142,7 +148,7 @@
 			<option value="url">url</option>
 		</select><br/>
 		<select name="menu.2.icon">
-			<option>-Icon-</option>
+			<option value="">-Icon-</option>
 			<option value="ic_at">ic_at</option>			
 			<option value="ic_home">ic_home</option>
 			<option value="ic_info">ic_info</option>
@@ -157,7 +163,7 @@
 		tab4 <br/>
 		<input placeholder="name" type="text" name="menu.3.name" /> <br/>
 		<select name="menu.3.action">
-			<option>-Action-</option>
+			<option value="">-Action-</option>
 			<option value="disable">Disable</option>
 			<option value="refresh">refresh</option>
 			<option value="share">share</option>
@@ -166,7 +172,7 @@
 			<option value="url">url</option>
 		</select><br/>
 		<select name="menu.3.icon">
-			<option>-Icon-</option>
+			<option value="">-Icon-</option>
 			<option value="ic_at">ic_at</option>			
 			<option value="ic_home">ic_home</option>
 			<option value="ic_info">ic_info</option>

@@ -1,8 +1,5 @@
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
-import groovyx.net.http.HTTPBuilder
 import org.apache.tools.ant.taskdefs.condition.Os
-import static groovyx.net.http.Method.GET
-
 buildscript {
     repositories {
         jcenter()
@@ -21,11 +18,11 @@ allprojects {
     }
 }
 
-Boolean DEBUG = true
 String buildNo
 String appName
 Properties loadedProperties
 
+logging.captureStandardOutput LogLevel.INFO
 task initConfig << {
 
     loadedProperties = new Properties()
@@ -41,7 +38,7 @@ task initConfig << {
 
 task copyApk(dependsOn: initConfig) << {
     copy {
-        from 'app', 'gradlew', 'gradlew.bat', 'local.properties'
+        from 'app', 'gradlew', 'gradlew.bat', 'local.properties', 'convert', 'convert.bat'
         into "temp/$buildNo"
         exclude '*.apk', '*.iml', 'build/*'
     }
@@ -67,7 +64,6 @@ task modifyBuild(dependsOn: merginProperties) << {
     appName = appname.replaceAll('[^a-zA-Z0-9 ]', '')
     def resources = fileTree(dir: "temp/$buildNo/src/main/res", include: 'values*/strings.xml')
     resources.each { stringFile ->
-        println "modify file $stringFile"
         String valuesContent = stringFile.getText('UTF-8')
         valuesContent = valuesContent.replaceAll("<string name=\"app_name\">AppCreator</string>",
                 "<string name=\"app_name\">$appName</string>")
@@ -126,14 +122,13 @@ task convertIcons(dependsOn: mergingKeyStoreProperties) << {
                     92 : 'src/main/res/drawable-xhdpi',
                     144: 'src/main/res/drawable-xxhdpi']
     sizedirs.each { s, f ->
-        def convertCommand = 'convert'
+        def convertCommand = './convert'
         if (Os.isFamily(Os.FAMILY_WINDOWS)) {
-            convertCommand = 'magick'
+            convertCommand = 'convert.bat'
         }
         exec {
             workingDir "temp/$buildNo"
-            commandLine convertCommand, "$icon", '-gravity'. 'center', '-resize', "${s}x${s}", '-matte', "mask/mask${s}.png",
-                    '-compose', 'DstIn', '-composite', "$f/ic_launcher.png"
+            commandLine convertCommand, "$icon", "$f/ic_launcher.png"
         }
     }
 
@@ -151,9 +146,13 @@ task buildApk(dependsOn: convertIcons) << {
 }
 
 task generateApk(dependsOn: buildApk) << {
+    def targetDir = 'generated'
+    if(target) {
+        targetDir = target
+    }
     copy {
         from "temp/$buildNo/build/outputs/apk"
-        into "generated"
+        into targetDir
         include "*-release.apk"
         rename(/(.*)+/, "${appName}.apk")
     }
@@ -165,33 +164,4 @@ task cleanTemp << {
 }
 
 generateApk.finalizedBy cleanTemp
-
-gradle.taskGraph.afterTask { Task task, TaskState state ->
-    if (!DEBUG) {
-        def http = new HTTPBuilder("http://localhost/")
-        if (state.failure) {
-            http.request(GET) {
-                uri.query = [v: '1.0', q: 'Calvin and Hobbes']
-                response.success = { resp, reader ->
-                    println "My response handler got response: ${resp.statusLine}"
-                    println reader
-                }
-                response.'404' = { resp ->
-                    println 'Not found'
-                }
-            }
-        } else {
-            http.request(GET) {
-                uri.query = [v: '1.0', q: 'Calvin and Hobbes']
-                response.success = { resp, reader ->
-                    println "My response handler got response: ${resp.statusLine}"
-                    println reader
-                }
-                response.'404' = { resp ->
-                    println 'Not found'
-                }
-            }
-        }
-    }
-}
 

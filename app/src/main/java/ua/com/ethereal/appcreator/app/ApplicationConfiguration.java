@@ -161,9 +161,9 @@ public class ApplicationConfiguration {
 
         private static void setAdConfiguration(ApplicationConfiguration applicationConfiguration, Properties properties) {
             AdConfiguration adConfiguration = new AdConfiguration();
-            adConfiguration.setEnabled(Boolean.parseBoolean(properties.getProperty("ad.enabled")));
+            adConfiguration.setEnabled(!"disabled".equals(properties.getProperty("ad.type")));
             adConfiguration.setAdmobId(properties.getProperty("ad.admobid"));
-            String position = properties.getProperty("ad.position");
+            String position = properties.getProperty("ad.type");
             switch (position) {
                 case "top":
                     adConfiguration.setPosition(AdPosition.ABOVE);
