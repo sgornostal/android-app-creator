@@ -1,5 +1,7 @@
 package ua.com.ethereal.appcreator.app;
 
+import android.content.Context;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
@@ -8,6 +10,26 @@ import java.util.Properties;
  * Created by Slava
  */
 public class MenuConfiguration {
+
+    private static volatile List<MenuConfiguration> menuConfiguration;
+    public static List<MenuConfiguration> getInstance(Context context) throws Exception {
+        if(menuConfiguration == null) {
+            synchronized (MenuConfiguration.class) {
+                if(menuConfiguration == null) {
+                    menuConfiguration = init(context);
+                }
+            }
+        }
+        return menuConfiguration;
+    }
+
+    private static List<MenuConfiguration> init(Context context) throws Exception{
+        Properties properties = new Properties();
+        properties.load(context.getResources().openRawResource(R.raw.config));
+        return MenuConfiguration.Builder.build(properties);
+    }
+
+    private MenuConfiguration() {}
 
     public static enum MenuIcon {
         AT("ic_at", R.drawable.ic_at),

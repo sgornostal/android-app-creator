@@ -1,10 +1,8 @@
 package ua.com.ethereal.appcreator.app;
 
 import android.app.Dialog;
-import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
-import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.net.MailTo;
 import android.net.Uri;
@@ -24,10 +22,8 @@ import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdSize;
 import com.google.android.gms.ads.AdView;
 
-import java.io.*;
 import java.util.List;
 import java.util.Locale;
-import java.util.Properties;
 
 
 public class MainActivity extends ActionBarActivity {
@@ -37,7 +33,6 @@ public class MainActivity extends ActionBarActivity {
     private ApplicationConfiguration applicationConfiguration;
     private List<MenuConfiguration> menuConfigurationList;
 
-    private RelativeLayout rootView;
     private WebView webView;
     private ViewFlipper splashFlipper;
     private ProgressBar progressBar;
@@ -48,7 +43,13 @@ public class MainActivity extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        init();
+        try {
+            applicationConfiguration = ApplicationConfiguration.getInstance(this);
+            menuConfigurationList = MenuConfiguration.getInstance(this);
+        } catch (Exception ex) {
+            Log.e(TAG, "Failed to init configuration");
+            finish();
+        }
 
         if (!applicationConfiguration.getStatusBar()) {
             getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
@@ -69,7 +70,7 @@ public class MainActivity extends ActionBarActivity {
             setRequestedOrientation(applicationConfiguration.getDisplayOrientation());
         }
 
-        rootView = (RelativeLayout) findViewById(R.id.root_view);
+        RelativeLayout rootView = (RelativeLayout) findViewById(R.id.root_view);
         webView = (WebView) findViewById(R.id.web_view);
         splashFlipper = (ViewFlipper) findViewById(R.id.splash_flipper);
         progressBar = (ProgressBar) findViewById(R.id.progress_bar);
@@ -177,19 +178,6 @@ public class MainActivity extends ActionBarActivity {
     }
 
 
-    private void init() {
-        try {
-            Properties properties = new Properties();
-            properties.load(getResources().openRawResource(R.raw.config));
-            String infoText = readResource(this, R.raw.info);
-            applicationConfiguration = ApplicationConfiguration.Builder.build(properties, infoText);
-            menuConfigurationList = MenuConfiguration.Builder.build(properties);
-        } catch (Exception ex) {
-            Log.e(TAG, "Failed to load application properties.", ex);
-            finish();
-        }
-    }
-
     private void setLocale(Locale locale) {
         Locale.setDefault(locale);
         Configuration config = new Configuration();
@@ -293,15 +281,5 @@ public class MainActivity extends ActionBarActivity {
         dialog.show();
     }
 
-    public String readResource(Context context, int resourceId) throws IOException {
-        Resources resources = context.getResources();
-        InputStream is = resources.openRawResource(resourceId);
-        BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(is));
-        StringBuilder stringBuilder = new StringBuilder();
-        String line;
-        while ((line = bufferedReader.readLine()) != null) {
-            stringBuilder.append(line);
-        }
-        return stringBuilder.toString();
-    }
+
 }

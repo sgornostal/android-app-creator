@@ -21,11 +21,11 @@ File content:
 app.name=temp123
 app.version=1.1
 app.icon=/Volumes/User/icon.png
+app.permissions=defaults/permisions.txt
 
-sign.storeFile=keystore.jks
-sign.storePassword=appcreator2014
-sign.keyAlias=appcreator
-sign.keyPassword=appcreator2014
+sign.name=appcreator
+sign.password=appcreator
+sign.years=2000
 
 url=ukr.net
 locale=en
@@ -45,8 +45,7 @@ push.enabled=false
 push.appid=
 push.clientkey=
 
-ad.enabled=true
-ad.position=bottom
+ad.type=bottom
 ad.admobid=ca-app-pub-3940256099942544/6300978111
 
 menu.0.name=Temp0
@@ -75,10 +74,10 @@ menu.3.url=google.com.ua
 1. **app.name** - application name
 2. **app.version** - application version
 2. **app.icon** - path to icon
-3. **sign.storeFile** - path to file e.g. `/home/ubuntu/keystore.jks`
-6. **sign.storePassword** - password for keystore
-7. **sign.keyAlias** - application alias in store
-8. **sign.keyPassword** - password for alias
+3. **app.permissions** - path to txt file with permissions
+3. **sign.name** - alias name for keystore
+6. **sign.password** - password for keystore
+7. **sign.year** - validation years
 2. **url** - application ulr, e.g. `ukr.net`, `www.google.com`
 2. **locale** - application language, available values: `en`, `fr`, `auto`. `auto` - equals device language.
 3. **actionbar.enabled** - disable or enable action bar on top, available values: `true`, `false`
@@ -94,8 +93,7 @@ menu.3.url=google.com.ua
 12. **push.enabled** - push notifications: `true`, `false`
 13. **push.appid** - gcm app id
 14. **push.clientkey** - client key
-15. **ad.enabled** - android advertising: `true`, `false`
-16. **ad.position** - ad position on screen: `top`, `bottom`
+16. **ad.type** - ad type: `top`, `bottom`, `disabled`
 17. **ad.admobid** - ad mob id: string, e.g. `ca-app-pub-3940256099942544/6300978111`
 18. **menu.X.name** - name for menu with index X
 19. **menu.X.action** - action for menu: `disable`, `refresh`, `share`, `about`, `quit`, `url`

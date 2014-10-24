@@ -142,9 +142,12 @@ foreach ($_POST as $key => $value) {
 }
 
 //save info
+$permissionsFile = $tmpfldr.'\\permissions.txt';
 $infoFile = $tmpfldr.'\\info.txt'; //replace for linux
 file_put_contents ( $infoFile , $props['info']);
+file_put_contents ( $permissionsFile , $props['permissions']);
 $props['app.info'] = $infoFile;
+$props['app.permissions'] = $permissionsFile;
 
 foreach ($_FILES as $key => $file) {	
 	if(trim($file['tmp_name']) == true) {
@@ -160,14 +163,17 @@ foreach ($props as $key => $value) {
 	$propVal = str_replace("\\", "\\\\", $value); //replace for linux
 	if(!empty($propVal)) {		
 		if(startsWith($propVal, 'http')) {
-			$remoteFile = substr($propVal, strrpos($propVal, '/') + 1);
-			file_put_contents($tmpfldr."/".$remoteFile, file_get_contents($propVal));
+			$remoteFile = substr($propVal, strrpos($propVal, '/') + 1);			
+			file_put_contents($tmpfldr."/".$remoteFile, file_get_contents($propVal));			
 			$propsStr .= str_replace("_", ".", $key)."=".$tmpfldr."/".$remoteFile.PHP_EOL;
 		} else {			
 			$propsStr .= str_replace("_", ".", $key)."=".$propVal.PHP_EOL;
 		}
 	}
 }
+
+$propsStr = str_replace('\\', '\\\\', $propsStr);
+
 $propsFile = $tmpfldr.'\\'.$app_name.'.properties';
 file_put_contents ( $propsFile , $propsStr);
 chdir("C:\\Bitnami\\app-creator-pro");

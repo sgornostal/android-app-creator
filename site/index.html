@@ -3,192 +3,193 @@
 <head>
 </head>
 <body>
-	<form action="realtime.php" method="post" type="submit" enctype="multipart/form-data">
-		<input placeholder="url" type="text" name="url" /> <br/>
-		<input placeholder="package" type="text" name="app.package" /> <br/>
-		<input placeholder="name" type="text" name="app.name" /> <br/>
-		<input placeholder="icon" type="text" name="app.icon" /> <br/>
-		<input placeholder="icon" type="file" name="app.icon_file" /> <br/>
-		<input placeholder="version" type="text" name="app.version" /> <br/>
-		<textarea name="info" placeholder="info" rwos="3"></textarea> <br/>	
-		<select name="locale">
-			<option>-Language-</option>
-			<option value="auto">Auto</option>
-			<option value="fr">France</option>
-			<option value="en">English</option>
-		</select><br/>
-		<input placeholder="email" type="text" name="email" /> <br/>		
-		<select name="orientation">
-			<option>-Orientation-</option>
-			<option value="landscape">Landscape</option>
-			<option value="portratit">Portratit</option>
-			<option value="auto">Auto</option>
-		</select><br/>
-		<select name="onsd">
-			<option>-Onsd-</option>
-			<option value="true">Enable</option>
-			<option value="false">Disable</option>
-		</select><br/>
-		<select name="statusbar">
-			<option>-Statusbar-</option>
-			<option value="true">Display</option>
-			<option value="false">Hide</option>
-		</select><br/>
-		<select name="actionbar.enabled">
-			<option>-ActionBar-</option>
-			<option value="true">Enable</option>
-			<option value="false">Disable</option>
-		</select><br/>
-		<input placeholder="action bar color" type="text" name="actionbar.color" /> <br/>
-		<select name="cache">
-			<option>-Cache-</option>
-			<option value="true">Enable</option>
-			<option value="false">Disable</option>
-		</select><br/>
-		<select name="browser">
-			<option>-Browser-</option>
-			<option value="internal">Internal</option>
-			<option value="external">External</option>
-		</select><br/>
-		<select name="zoomcontrol">
-			<option>-Zoom control-</option>
-			<option value="true">Enable</option>
-			<option value="false">Disable</option>
-		</select><br/>
-		<select name="splash.enabled">
-			<option>-Splash screen-</option>
-			<option value="true">Enable</option>
-			<option value="false">Disable</option>
-		</select><br/>
-		<input placeholder="splash bg" type="text" name="splash.background" /> <br/>
-		<input placeholder="splash image" type="text" name="splash.image" /> <br/>
-		<input placeholder="icon" type="file" name="splash.image_file" /> <br/>
-		<select name="splash.layout">
-			<option>-Splash layout-</option>
-			<option value="wrap_content">wrap_content</option>
-			<option value="match_parent">match_parent</option>
-		</select><br/>
-		<select name="ad.enabled">
-			<option>-Ad screen-</option>
-			<option value="true">Enable</option>
-			<option value="false">Disable</option>
-		</select><br/>
-		<select name="ad.position">
-			<option>-Ad position-</option>
-			<option value="top">Top</option>
-			<option value="bottom">Bottom</option>
-		</select><br/>
-		<input placeholder="ad mob id" type="text" name="ad.admobid" /> <br/>
-		<select name="push.enabled">
-			<option>-Push notifications-</option>
-			<option value="true">Enable</option>
-			<option value="false">Disable</option>
-		</select><br/>
-		<input placeholder="push app id" type="text" name="push.appid" /> <br/>
-		<input placeholder="push client key" type="text" name="push.clientkey" /> <br/>
-		<hr/>
-		status bar <br/>
-		tab1 <br/>
-		<input placeholder="name" type="text" name="menu.0.name" /> <br/>
-		<select name="menu.0.action">
-			<option value="">-Action-</option>
-			<option value="disable">Disable</option>
-			<option value="refresh">refresh</option>
-			<option value="share">share</option>
-			<option value="about">about</option>
-			<option value="quit">quit</option>
-			<option value="url">url</option>
-		</select><br/>
-		<select name="menu.0.icon">
-			<option value="">-Icon-</option>
-			<option value="ic_at">ic_at</option>			
-			<option value="ic_home">ic_home</option>
-			<option value="ic_info">ic_info</option>
-			<option value="ic_new">ic_new</option>
-			<option value="ic_close">ic_close</option>
-			<option value="ic_refresh">ic_refresh</option>
-			<option value="ic_setting">ic_setting</option>
-			<option value="ic_share">ic_share</option>
-		</select><br/>
-		<input placeholder="url" type="text" name="menu.0.url" /> <br/>	
-		<br/>	
-		tab2 <br/>
-		<input placeholder="name" type="text" name="menu.1.name" /> <br/>
-		<select name="menu.1.action">
-			<option value="">-Action-</option>
-			<option value="disable">Disable</option>
-			<option value="refresh">refresh</option>
-			<option value="share">share</option>
-			<option value="about">about</option>
-			<option value="quit">quit</option>
-			<option value="url">url</option>
-		</select><br/>
-		<select name="menu.1.icon">
-			<option value="">-Icon-</option>
-			<option value="ic_at">ic_at</option>			
-			<option value="ic_home">ic_home</option>
-			<option value="ic_info">ic_info</option>
-			<option value="ic_new">ic_new</option>
-			<option value="ic_close">ic_close</option>
-			<option value="ic_refresh">ic_refresh</option>
-			<option value="ic_setting">ic_setting</option>
-			<option value="ic_share">ic_share</option>
-		</select><br/>
-		<input placeholder="url" type="text" name="menu.1.url" /> <br/>	
-		<br/>	
-		tab3 <br/>
-		<input placeholder="name" type="text" name="menu.2.name" /> <br/>
-		<select name="menu.2.action">
-			<option value="">-Action-</option>
-			<option value="disable">Disable</option>
-			<option value="refresh">refresh</option>
-			<option value="share">share</option>
-			<option value="about">about</option>
-			<option value="quit">quit</option>
-			<option value="url">url</option>
-		</select><br/>
-		<select name="menu.2.icon">
-			<option value="">-Icon-</option>
-			<option value="ic_at">ic_at</option>			
-			<option value="ic_home">ic_home</option>
-			<option value="ic_info">ic_info</option>
-			<option value="ic_new">ic_new</option>
-			<option value="ic_close">ic_close</option>
-			<option value="ic_refresh">ic_refresh</option>
-			<option value="ic_setting">ic_setting</option>
-			<option value="ic_share">ic_share</option>
-		</select><br/>
-		<input placeholder="url" type="text" name="menu.2.url" /> <br/>	
-		<br/>	
-		tab4 <br/>
-		<input placeholder="name" type="text" name="menu.3.name" /> <br/>
-		<select name="menu.3.action">
-			<option value="">-Action-</option>
-			<option value="disable">Disable</option>
-			<option value="refresh">refresh</option>
-			<option value="share">share</option>
-			<option value="about">about</option>
-			<option value="quit">quit</option>
-			<option value="url">url</option>
-		</select><br/>
-		<select name="menu.3.icon">
-			<option value="">-Icon-</option>
-			<option value="ic_at">ic_at</option>			
-			<option value="ic_home">ic_home</option>
-			<option value="ic_info">ic_info</option>
-			<option value="ic_new">ic_new</option>
-			<option value="ic_close">ic_close</option>
-			<option value="ic_refresh">ic_refresh</option>
-			<option value="ic_setting">ic_setting</option>
-			<option value="ic_share">ic_share</option>
-		</select><br/>
-		<input placeholder="url" type="text" name="menu.3.url" /> <br/>				
-		<hr/>
-		<input placeholder="sign file" type="file" name="sign.storeFile" /> <br/>
-		<input placeholder="storePassword" type="text" name="sign.storePassword" /> <br/>	
-		<input placeholder="keyAlias" type="text" name="sign.keyAlias" /> <br/>	
-		<input placeholder="keyPassword" type="text" name="sign.keyPassword" /> <br/>	
-		<button type="submit">Submit</button>
-	</form>
+<form action="realtime.php" method="post" type="submit" enctype="multipart/form-data">
+    <input placeholder="url" type="text" name="url" /> <br/>
+    <input placeholder="package" type="text" name="app.package" /> <br/>
+    <input placeholder="name" type="text" name="app.name" /> <br/>
+    <input placeholder="icon" type="text" name="app.icon" /> <br/>
+    <input placeholder="icon" type="file" name="app.icon_file" /> <br/>
+    <input placeholder="version" type="text" name="app.version" /> <br/>
+    <textarea name="info" placeholder="info" rows="3"></textarea> <br/>
+    <select name="locale">
+        <option>-Language-</option>
+        <option value="auto">Auto</option>
+        <option value="fr">France</option>
+        <option value="en">English</option>
+    </select><br/>
+    <input placeholder="email" type="text" name="email" /> <br/>
+    <select name="orientation">
+        <option>-Orientation-</option>
+        <option value="landscape">Landscape</option>
+        <option value="portratit">Portratit</option>
+        <option value="auto">Auto</option>
+    </select><br/>
+    <select name="onsd">
+        <option>-Onsd-</option>
+        <option value="true">Enable</option>
+        <option value="false">Disable</option>
+    </select><br/>
+    <select name="statusbar">
+        <option>-Statusbar-</option>
+        <option value="true">Display</option>
+        <option value="false">Hide</option>
+    </select><br/>
+    <select name="actionbar.enabled">
+        <option>-ActionBar-</option>
+        <option value="true">Enable</option>
+        <option value="false">Disable</option>
+    </select><br/>
+    <input placeholder="action bar color" type="text" name="actionbar.color" /> <br/>
+    <select name="cache">
+        <option>-Cache-</option>
+        <option value="true">Enable</option>
+        <option value="false">Disable</option>
+    </select><br/>
+    <select name="browser">
+        <option>-Browser-</option>
+        <option value="internal">Internal</option>
+        <option value="external">External</option>
+    </select><br/>
+    <select name="zoomcontrol">
+        <option>-Zoom control-</option>
+        <option value="true">Enable</option>
+        <option value="false">Disable</option>
+    </select><br/>
+    <select name="splash.enabled">
+        <option>-Splash screen-</option>
+        <option value="true">Enable</option>
+        <option value="false">Disable</option>
+    </select><br/>
+    <input placeholder="splash bg" type="text" name="splash.background" /> <br/>
+    <input placeholder="splash image" type="text" name="splash.image" /> <br/>
+    <input placeholder="icon" type="file" name="splash.image_file" /> <br/>
+    <select name="splash.layout">
+        <option>-Splash layout-</option>
+        <option value="wrap_content">wrap_content</option>
+        <option value="match_parent">match_parent</option>
+    </select><br/>
+    <select name="ad.enabled">
+        <option>-Ad screen-</option>
+        <option value="true">Enable</option>
+        <option value="false">Disable</option>
+    </select><br/>
+    <select name="ad.position">
+        <option>-Ad position-</option>
+        <option value="top">Top</option>
+        <option value="bottom">Bottom</option>
+    </select><br/>
+    <input placeholder="ad mob id" type="text" name="ad.admobid" /> <br/>
+    <select name="push.enabled">
+        <option>-Push notifications-</option>
+        <option value="true">Enable</option>
+        <option value="false">Disable</option>
+    </select><br/>
+    <input placeholder="push app id" type="text" name="push.appid" /> <br/>
+    <input placeholder="push client key" type="text" name="push.clientkey" /> <br/>
+    <hr/>
+    status bar <br/>
+    tab1 <br/>
+    <input placeholder="name" type="text" name="menu.0.name" /> <br/>
+    <select name="menu.0.action">
+        <option value="">-Action-</option>
+        <option value="disable">Disable</option>
+        <option value="refresh">refresh</option>
+        <option value="share">share</option>
+        <option value="about">about</option>
+        <option value="quit">quit</option>
+        <option value="url">url</option>
+    </select><br/>
+    <select name="menu.0.icon">
+        <option value="">-Icon-</option>
+        <option value="ic_at">ic_at</option>
+        <option value="ic_home">ic_home</option>
+        <option value="ic_info">ic_info</option>
+        <option value="ic_new">ic_new</option>
+        <option value="ic_close">ic_close</option>
+        <option value="ic_refresh">ic_refresh</option>
+        <option value="ic_setting">ic_setting</option>
+        <option value="ic_share">ic_share</option>
+    </select><br/>
+    <input placeholder="url" type="text" name="menu.0.url" /> <br/>
+    <br/>
+    tab2 <br/>
+    <input placeholder="name" type="text" name="menu.1.name" /> <br/>
+    <select name="menu.1.action">
+        <option value="">-Action-</option>
+        <option value="disable">Disable</option>
+        <option value="refresh">refresh</option>
+        <option value="share">share</option>
+        <option value="about">about</option>
+        <option value="quit">quit</option>
+        <option value="url">url</option>
+    </select><br/>
+    <select name="menu.1.icon">
+        <option value="">-Icon-</option>
+        <option value="ic_at">ic_at</option>
+        <option value="ic_home">ic_home</option>
+        <option value="ic_info">ic_info</option>
+        <option value="ic_new">ic_new</option>
+        <option value="ic_close">ic_close</option>
+        <option value="ic_refresh">ic_refresh</option>
+        <option value="ic_setting">ic_setting</option>
+        <option value="ic_share">ic_share</option>
+    </select><br/>
+    <input placeholder="url" type="text" name="menu.1.url" /> <br/>
+    <br/>
+    tab3 <br/>
+    <input placeholder="name" type="text" name="menu.2.name" /> <br/>
+    <select name="menu.2.action">
+        <option value="">-Action-</option>
+        <option value="disable">Disable</option>
+        <option value="refresh">refresh</option>
+        <option value="share">share</option>
+        <option value="about">about</option>
+        <option value="quit">quit</option>
+        <option value="url">url</option>
+    </select><br/>
+    <select name="menu.2.icon">
+        <option value="">-Icon-</option>
+        <option value="ic_at">ic_at</option>
+        <option value="ic_home">ic_home</option>
+        <option value="ic_info">ic_info</option>
+        <option value="ic_new">ic_new</option>
+        <option value="ic_close">ic_close</option>
+        <option value="ic_refresh">ic_refresh</option>
+        <option value="ic_setting">ic_setting</option>
+        <option value="ic_share">ic_share</option>
+    </select><br/>
+    <input placeholder="url" type="text" name="menu.2.url" /> <br/>
+    <br/>
+    tab4 <br/>
+    <input placeholder="name" type="text" name="menu.3.name" /> <br/>
+    <select name="menu.3.action">
+        <option value="">-Action-</option>
+        <option value="disable">Disable</option>
+        <option value="refresh">refresh</option>
+        <option value="share">share</option>
+        <option value="about">about</option>
+        <option value="quit">quit</option>
+        <option value="url">url</option>
+    </select><br/>
+    <select name="menu.3.icon">
+        <option value="">-Icon-</option>
+        <option value="ic_at">ic_at</option>
+        <option value="ic_home">ic_home</option>
+        <option value="ic_info">ic_info</option>
+        <option value="ic_new">ic_new</option>
+        <option value="ic_close">ic_close</option>
+        <option value="ic_refresh">ic_refresh</option>
+        <option value="ic_setting">ic_setting</option>
+        <option value="ic_share">ic_share</option>
+    </select><br/>
+    <input placeholder="url" type="text" name="menu.3.url" /> <br/>
+    <hr/>
+    <textarea name="permissions" placeholder="permissions" rows="3"></textarea> <br/>
+    <br/>
+    <input placeholder="key name" type="text" name="sign.name" /> <br/>
+    <input placeholder="key password" type="text" name="sign.password" /> <br/>
+    <input placeholder="key years" type="text" name="sign.years" /> <br/>
+    <button type="submit">Submit</button>
+</form>
 </body>
 </html>

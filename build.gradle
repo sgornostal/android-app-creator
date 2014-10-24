@@ -26,8 +26,12 @@ logging.captureStandardOutput LogLevel.INFO
 task initConfig << {
 
     loadedProperties = new Properties()
+    loadedProperties.load(new FileInputStream("defaults.properties"))
     try {
-        loadedProperties.load(new FileInputStream(config))
+        def configProperties = new Properties()
+        configProperties.load(new FileInputStream(config))
+        loadedProperties.putAll(configProperties)
+        println loadedProperties
     } catch (Exception e) {
         throw new Exception("Invalid configuration file path", e)
     }
@@ -75,11 +79,12 @@ task modifyBuild(dependsOn: merginProperties) << {
     if(loadedProperties.getProperty('onsd')) {
         manifestContent = manifestContent.replace('android:installLocation="auto"', 'android:installLocation="preferExternal"')
     }
+    manifestContent = manifestContent.replaceAll("ua.com.ethereal.appcreator.appid", loadedProperties.getProperty("app.package"))
     manifestFile.write(manifestContent, 'UTF-8')
 
     File buildGradle = file("temp/$buildNo/build.gradle")
     String buildContent = buildGradle.getText('UTF-8')
-    buildContent = buildContent.replace("ua.com.ethereal.appcreator.app", loadedProperties.getProperty("app.package"))
+    buildContent = buildContent.replace("ua.com.ethereal.appcreator.appid", loadedProperties.getProperty("app.package"))
     buildContent = buildContent.replace("versionName \"1.0\"", "versionName \"" + loadedProperties.getProperty("app.version") + "\"")
     buildGradle.write(buildContent, 'UTF-8')
 
@@ -101,16 +106,49 @@ task modifyBuild(dependsOn: merginProperties) << {
     }
 }
 
-task mergingKeyStoreProperties(dependsOn: modifyBuild) << {
-    def keyStoreProperties = new Properties()
-    def projectKeyStoreProps = new Properties()
-    keyStoreProperties.load(new FileInputStream("temp/$buildNo/src/main/res/raw/config.properties"))
-    projectKeyStoreProps.load(new FileInputStream("temp/$buildNo/keystore.properties"))
-    projectKeyStoreProps.putAll(keyStoreProperties.findAll { it.key.startsWith('sign.') })
-    projectKeyStoreProps.store(new FileOutputStream("temp/$buildNo/keystore.properties"), null)
+task addPermissions(dependsOn: modifyBuild) << {
+    if(!loadedProperties.getProperty("app.permissions")) {
+        return
+    }
+    File manifestFile = file("temp/$buildNo/src/main/AndroidManifest.xml")
+    String manifestContent = manifestFile.getText('UTF-8')
+    manifestContent = manifestContent.replace('<!--PERMISSIONS_HOLDER-->', new File(loadedProperties.getProperty("app.permissions")).text)
+    manifestFile.write(manifestContent, 'UTF-8')
 }
 
-task convertIcons(dependsOn: mergingKeyStoreProperties) << {
+task makingKey(dependsOn: addPermissions) << {
+    def aliasName = loadedProperties.getProperty("sign.name")
+    aliasName = aliasName?aliasName:'appcreator'
+    def passwordToKey = loadedProperties.getProperty("sign.password")
+    passwordToKey = passwordToKey?passwordToKey:'appcreator'
+    def validationYears = loadedProperties.getProperty("sign.years")
+    validationYears = validationYears?validationYears:'5000'
+
+    def keyInfo = file("temp/$buildNo/keyinfo.txt")
+    String content = keyInfo.getText('UTF-8')
+    content = content.replaceAll('_PASS_', passwordToKey)
+    keyInfo.write(content, 'UTF-8')
+
+    def keyProps = file("temp/$buildNo/keystore.properties")
+    String propsContent = keyProps.getText('UTF-8')
+    propsContent = propsContent.replaceAll('_NAME_', aliasName)
+    propsContent = propsContent.replaceAll('_PASS_', passwordToKey)
+    keyProps.write(propsContent, 'UTF-8')
+
+    def execCommand = './mkey'
+    if (Os.isFamily(Os.FAMILY_WINDOWS)) {
+        execCommand = 'mkey.bat'
+    }
+    exec {
+        workingDir "temp/$buildNo"
+        commandLine 'keytool', '-genkey', '-v', '-keystore', 'release-key.keystore', '-alias',
+                "$aliasName", '-keyalg', 'RSA', '-keysize', '2048', '-validity', "$validationYears"
+        standardInput new FileInputStream("temp/$buildNo/keyinfo.txt")
+    }
+
+}
+
+task convertIcons(dependsOn: makingKey) << {
     def icon = loadedProperties.getProperty("app.icon")
     if (!icon) {
         throw new Exception("Invalid icon path")
@@ -147,7 +185,7 @@ task buildApk(dependsOn: convertIcons) << {
 
 task generateApk(dependsOn: buildApk) << {
     def targetDir = 'generated'
-    if(target) {
+    if(project.hasProperty('target')) {
         targetDir = target
     }
     copy {

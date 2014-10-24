@@ -1,5 +1,6 @@
 package ua.com.ethereal.appcreator.app;
 
+import android.content.Context;
 import android.content.pm.ActivityInfo;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -12,6 +13,26 @@ import java.util.Properties;
  * Created by Slava
  */
 public class ApplicationConfiguration {
+
+    private static ApplicationConfiguration applicationConfiguration;
+
+    public static ApplicationConfiguration getInstance(Context context) throws Exception{
+        if(applicationConfiguration == null) {
+            synchronized (ActionBarConfiguration.class) {
+                if(applicationConfiguration == null) {
+                    applicationConfiguration = init(context);
+                }
+            }
+        }
+        return applicationConfiguration;
+    }
+
+    private static ApplicationConfiguration init(Context context) throws Exception {
+        Properties properties = new Properties();
+        properties.load(context.getResources().openRawResource(R.raw.config));
+        String infoText = Utils.readResource(context, R.raw.info);
+        return ApplicationConfiguration.Builder.build(properties, infoText);
+    }
 
     public static enum BrowserType {
         INTERNAL,
