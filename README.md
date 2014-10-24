@@ -76,7 +76,7 @@ menu.3.url=google.com.ua
 2. **app.icon** - path to icon
 3. **app.permissions** - path to txt file with permissions
 3. **sign.name** - alias name for keystore
-6. **sign.password** - password for keystore
+6. **sign.password** - password for keystore **Important! Min length 6 symbols**
 7. **sign.year** - validation years
 2. **url** - application ulr, e.g. `ukr.net`, `www.google.com`
 2. **locale** - application language, available values: `en`, `fr`, `auto`. `auto` - equals device language.
@@ -95,7 +95,7 @@ menu.3.url=google.com.ua
 14. **push.clientkey** - client key
 16. **ad.type** - ad type: `top`, `bottom`, `disabled`
 17. **ad.admobid** - ad mob id: string, e.g. `ca-app-pub-3940256099942544/6300978111`
-18. **menu.X.name** - name for menu with index X
+18. **menu.X.name** - name for menu with index X, like `menu.0.name`, `menu.1.name` ... etc.
 19. **menu.X.action** - action for menu: `disable`, `refresh`, `share`, `about`, `quit`, `url`
 20. **menu.X.icon** - icon for menu: `ic_at`, `ic_home`, `ic_info`, `ic_new`, `ic_close`, `ic_refresh`, `ic_setting`, `ic_share`
 21. **menu.X.url** - url for menu action, e.g. `ukr.net`, `www.google.com`

@@ -1,2 +1,2 @@
 #!/usr/bin/env bash
-magick $1 ( +clone  -threshold -1 -draw "fill black polygon 0,0 0,30 30,0 fill white circle 30,30 30,0" ( +clone -flip ) -compose Multiply -composite  ( +clone -flop ) -compose Multiply -composite ) +matte -compose CopyOpacity -composite $2
+convert $1 '(' +clone  -threshold -1 -draw "fill black polygon 0,0 0,30 30,0 fill white circle 30,30 30,0" '(' +clone -flip ')' -compose Multiply -composite  '(' +clone -flop ')' -compose Multiply -composite ')' +matte -compose CopyOpacity -composite $2
