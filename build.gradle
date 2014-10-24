@@ -22,7 +22,7 @@ String buildNo
 String appName
 Properties loadedProperties
 
-logging.captureStandardOutput LogLevel.INFO
+//logging.captureStandardOutput LogLevel.INFO
 task initConfig << {
 
     loadedProperties = new Properties()
@@ -30,8 +30,7 @@ task initConfig << {
     try {
         def configProperties = new Properties()
         configProperties.load(new FileInputStream(config))
-        loadedProperties.putAll(configProperties)
-        println loadedProperties
+        loadedProperties.putAll(configProperties.findAll { !((String) it.value).isEmpty() })
     } catch (Exception e) {
         throw new Exception("Invalid configuration file path", e)
     }
