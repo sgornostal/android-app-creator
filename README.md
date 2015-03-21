@@ -3,6 +3,11 @@ Android application creator PRO (by url)
 
 Gradle build script with application
 
+## System requirements
+
+* Java 1.7+
+* Imagemagick 6.9+
+
 ## Getting Started
 Build command:
 ```
