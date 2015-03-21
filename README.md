@@ -1,4 +1,4 @@
-Android application creator PRO (by url)
+Android application creator (from url)
 ==========
 
 Gradle build script with application
